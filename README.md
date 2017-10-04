@@ -1,2 +1,2 @@
 # homework
-Java self-study
+Java self-study. Java 8 or higher
