@@ -1,10 +1,13 @@
 package com.home.pojo;
 
+import java.util.List;
+
 public class Department {
 
 	private int id;
 	private String acronym;
 	private String description;
+	List<Employee> employees;
 
 	public Department() {
 		super();
@@ -39,6 +42,14 @@ public class Department {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
 
 	@Override

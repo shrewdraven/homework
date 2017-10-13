@@ -11,14 +11,14 @@ public class SampleDataGeneratorTester {
 		fail("Not yet implemented");
 	}
 
-	// @Test
+	@Test
 	public void testGetDepartmentList() {
-		fail("Not yet implemented");
+		SampleDataGenerator.INSTANCE.getDepartmentList().forEach(System.out::println);
 	}
 
-	@Test
+	// @Test
 	public void testGetEmployeeList() {
-		SampleDataGenerator.getEmployeeList().forEach(System.out::println);
+		SampleDataGenerator.INSTANCE.getEmployeeList().forEach(System.out::println);
 	}
 
 }

@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.home.data.SampleDataGenerator;
+import com.home.pojo.Department;
 import com.home.pojo.Employee;
 import com.home.pojo.Person;
 
@@ -55,7 +58,7 @@ public final class LambdaDemonstrator {
 
 		System.out.println(
 				"----------------------------------------Employees-----------------------------------------------------------");
-		List<Employee> employees = new ArrayList<>(SampleDataGenerator.getEmployeeList());
+		List<Employee> employees = new ArrayList<>(SampleDataGenerator.INSTANCE.getEmployeeList());
 		employees.forEach(System.out::println);
 		System.out.println(
 				"---------------------------------------------------------------------------------------------------");
@@ -76,7 +79,7 @@ public final class LambdaDemonstrator {
 
 		System.out.println(
 				"----------------------------------------Employees-----------------------------------------------------------");
-		List<Employee> employees = new ArrayList<>(SampleDataGenerator.getEmployeeList());
+		List<Employee> employees = new ArrayList<>(SampleDataGenerator.INSTANCE.getEmployeeList());
 		employees.forEach(System.out::println);
 		System.out.println(
 				"---------------------------------------------------------------------------------------------------");
@@ -92,7 +95,7 @@ public final class LambdaDemonstrator {
 
 		System.out.println(
 				"----------------------------------------Employees-----------------------------------------------------------");
-		List<Employee> employees = new ArrayList<>(SampleDataGenerator.getEmployeeList());
+		List<Employee> employees = new ArrayList<>(SampleDataGenerator.INSTANCE.getEmployeeList());
 		employees.forEach(System.out::println);
 		System.out.println(
 				"---------------------------------------------------------------------------------------------------");
@@ -121,9 +124,39 @@ public final class LambdaDemonstrator {
 		// e.g: Get the distinct departments
 		System.out.println("**********e.g: Get the distinct departments**********");
 		employees.stream().map(Employee::getDepartment).distinct().forEach(System.out::println);
-		
-		/*Stream<T> 	filter(Predicate<? super T> predicate)*/
-		System.out.println("##########Stream<T> 	filter(Predicate<? super T> predicate)##########");
-		//e.g: 
+
+		/* Optional<T> findAny() */
+		System.out.println("##########Optional<T> findAny()##########");
+		Optional<Employee> employee = employees.stream().findAny();
+		System.out.println("Found an employee ? " + employee.isPresent());
+
+		List<Department> departments = SampleDataGenerator.INSTANCE.getDepartmentList();
+
+		/*
+		 * <R> Stream<R> flatMap(Function<? super T,? extends Stream<? extends
+		 * R>> mapper)
+		 */
+		System.out.println(
+				"##########<R> Stream<R> flatMap(Function<? super T,? extends Stream<? extends R>> mapper)##########");
+		// e.g: Given a list of departments and each department having several
+		// employees, get list of all the employees
+		System.out.println(
+				"**********e.g: Given a list of departments and each department having several employees, get list of all the employees**********");
+		departments.stream().flatMap(department -> department.getEmployees().stream()).forEach(System.out::println);
+
+		/*
+		 * IntStream flatMapToInt(Function<? super T,? extends IntStream>
+		 * mapper)
+		 */
+		System.out
+				.println("##########IntStream flatMapToInt(Function<? super T,? extends IntStream> mapper)##########");
+		// e.g: Given a list of departments and each department having several
+		// employees, list all the salaries
+		System.out.println(
+				"**********e.g: Given a list of departments and each department having several employees, list all the salaries**********");
+		departments.stream()
+				.flatMapToInt(department -> department.getEmployees().stream().mapToInt(Employee::getSalary))
+				.forEach(System.out::println);
+			
 	}
 }
