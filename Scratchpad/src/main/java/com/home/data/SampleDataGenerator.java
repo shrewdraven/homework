@@ -45,7 +45,8 @@ public enum SampleDataGenerator {
 				new Employee("José", "Londoño", Date.valueOf("1943-10-01"), departmentMap.get("NOVL"), 3512789),
 				new Employee("Diego", "Montoya", Date.valueOf("1958-01-14"), departmentMap.get("NOVL"), 4712563),
 				new Employee("Hermilda", "Gaviria", Date.valueOf("1925-03-25"), departmentMap.get("HOME"), 1000),
-				new Employee("Abel", "Gaviria", Date.valueOf("1920-11-22"), departmentMap.get("HOME"), 1800));
+				new Employee("Abel", "Gaviria", Date.valueOf("1920-11-22"), departmentMap.get("HOME"), 1800),
+				new Employee("Juan", "Escobar", Date.valueOf("1977-02-24"), departmentMap.get("HOME"), 100));
 
 		departments.stream().forEach(department -> department.setEmployees(employees.stream()
 				.filter(employee -> employee.getDepartment().equals(department)).collect(Collectors.toList())));
@@ -78,5 +79,10 @@ public enum SampleDataGenerator {
 	public List<Employee> getEmployeeList() {
 
 		return Collections.unmodifiableList(employees);
+	}
+
+	public Map<Department, List<Employee>> getDepartmentwiseEmployees() {
+
+		return departments.stream().collect(Collectors.toMap(Function.identity(), Department::getEmployees));
 	}
 }

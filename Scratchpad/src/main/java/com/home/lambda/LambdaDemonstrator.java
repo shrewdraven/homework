@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.home.data.SampleDataGenerator;
 import com.home.pojo.Department;
@@ -91,6 +90,15 @@ public final class LambdaDemonstrator {
 
 	}
 
+	/****************************************
+	 * Start : API class/interface method examples
+	 ****************************************/
+	//java.util.stream.Collectors
+	
+	
+	
+	
+	//java.util.stream Interface Stream<T>
 	public void demoStreamMethods() {
 
 		System.out.println(
@@ -157,6 +165,71 @@ public final class LambdaDemonstrator {
 		departments.stream()
 				.flatMapToInt(department -> department.getEmployees().stream().mapToInt(Employee::getSalary))
 				.forEach(System.out::println);
-			
+
+		/* <R> Stream<R> map(Function<? super T,? extends R> mapper) */
+		System.out.println("##########<R> Stream<R> map(Function<? super T,? extends R> mapper)##########");
+		// e.g: From a list of employees, get a list of their first names
+		System.out.println("**********e.g: From a list of employees, get a list of their first names**********");
+		employees.stream().map(Employee::getFirstName).forEach(System.out::println);
+
+		/* Optional<T> max(Comparator<? super T> comparator) */
+		System.out.println("##########Optional<T> max(Comparator<? super T> comparator)##########");
+		// e.g: Get the maximum salary
+		System.out.println("**********e.g: Get the employee with the maximum salary**********");
+		System.out.println("Employee with max. salary is "
+				+ employees.stream().max(Comparator.comparingInt(Employee::getSalary)).toString());
+
+		/* Optional<T> min(Comparator<? super T> comparator) */
+		System.out.println("##########Optional<T> min(Comparator<? super T> comparator)##########");
+		// e.g: Get the youngest employee
+		System.out.println("**********e.g: Get the youngest employee**********");
+		System.out.println("Youngest employee is "
+				+ employees.stream().min(Comparator.comparing(Employee::getDob, Comparator.reverseOrder())).toString());
+
+		/* boolean noneMatch(Predicate<? super T> predicate) */
+		System.out.println("##########boolean noneMatch(Predicate<? super T> predicate)##########");
+		// e.g: Check if there are any minors in the employees !!!
+		System.out.println("**********e.g: Check if there are any minors in the employees !!!**********");
+		LocalDate baseDate = LocalDate.parse("1993-01-01");
+		System.out.println("A minor employee does not exist ? " + employees.stream()
+				.noneMatch(emp -> Period.between(LocalDate.parse(emp.getDob().toString()), baseDate).getYears() < 18));
+
+		/* Optional<T> reduce(BinaryOperator<T> accumulator) */
+		System.out.println("##########Optional<T> reduce(BinaryOperator<T> accumulator)##########");
+		// e.g: The total salary paid by a department can be found by adding the
+		// individual employee salaries
+		System.out.println(
+				"**********e.g: The total salary paid by a department can be found by adding the individual employee salaries**********");
+		System.out.println("Total salary : " + employees.stream()
+				.filter(emp -> emp.getDepartment().getAcronym().equalsIgnoreCase("PLDC")).mapToInt(Employee::getSalary)
+				.peek(sal -> System.out.println("Salary : " + sal)).reduce(Integer::sum));
+
+		/* T reduce(T identity, BinaryOperator<T> accumulator) */
+		System.out.println("########## reduce(T identity, BinaryOperator<T> accumulator)##########");
+		// e.g:Each department has some expenses to be paid e.g: stationary.
+		// These expenses shall be added to the total salary to get the total
+		// expenditure
+		System.out.println(
+				"**********e.g:Each department has some expenses to be paid e.g: stationary. These expenses shall be added to the total salary to get the total expenditure**********");
+		System.out.println("Total expenditure : " + employees.stream()
+				.filter(emp -> emp.getDepartment().getAcronym().equals("PLDC")).mapToInt(Employee::getSalary)
+				.peek(sal -> System.out.println("Salary : " + sal)).reduce(1000, Integer::sum));
+
+		/*
+		 * <U> U reduce(U identity, BiFunction<U,? super T,U> accumulator,
+		 * BinaryOperator<U> combiner)
+		 */
+		// TODO
+
+		/* Stream<T> sorted() */
+		System.out.println("########## Stream<T> sorted()##########");
+		// e.g: Sort persons by first name
+		List<Person> persons = new ArrayList<>(SampleDataGenerator.getPersonList());
+		persons.stream().sorted(Comparator.comparing(Person::getFirstName, Comparator.naturalOrder()))
+				.forEach(System.out::println);
+
 	}
+	/****************************************
+	 * End : API class/interface method examples
+	 ****************************************/
 }

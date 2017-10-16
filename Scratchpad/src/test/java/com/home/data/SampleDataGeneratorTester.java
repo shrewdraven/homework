@@ -11,7 +11,7 @@ public class SampleDataGeneratorTester {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	// @Test
 	public void testGetDepartmentList() {
 		SampleDataGenerator.INSTANCE.getDepartmentList().forEach(System.out::println);
 	}
@@ -21,4 +21,8 @@ public class SampleDataGeneratorTester {
 		SampleDataGenerator.INSTANCE.getEmployeeList().forEach(System.out::println);
 	}
 
+	@Test
+	public void testGetDepartmentwiseEmployees() {
+		System.out.println(SampleDataGenerator.INSTANCE.getDepartmentwiseEmployees().toString());
+	}
 }
